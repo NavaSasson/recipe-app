@@ -1,18 +1,18 @@
 Recipes Collection App:
 
-# Project Structure
-# recipe_app/
-# ├── .env
-# ├── requirements.txt
-# ├── src/
-# │   ├── __init__.py
-# │   ├── app.py
-# │   ├── config.py
-# │   ├── models.py
-# │   └── static/
-# │       ├── index.html
-# │       ├── styles.css
-# │       └── script.js
+ Project Structure
+ recipe_app/
+ ├── .env
+ ├── requirements.txt
+ ├── src/
+ │   ├── __init__.py
+ │   ├── app.py
+ │   ├── config.py
+ │   ├── models.py
+ │   └── static/
+ │       ├── index.html
+ │       ├── styles.css
+ │       └── script.js
 
 Application structure and how each component works:
 
@@ -66,7 +66,8 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 # 3. Set up MongoDB
-# Create a MongoDB database and user:
+
+Create a MongoDB database and user:
 mongo
 > use admin
 > db.createUser({
@@ -82,7 +83,7 @@ mongo
 })
 
 # 4. Create .env file with MongoDB credentials
-# Copy the contents shown earlier in the .env section
+Copy the contents shown earlier in the .env section
 
 # 5. Run the application
 python src/app.py
