@@ -1,18 +1,4 @@
-Recipes Collection App:
-
- Project Structure
- recipe_app/
- ├── .env
- ├── requirements.txt
- ├── src/
- │   ├── __init__.py
- │   ├── app.py
- │   ├── config.py
- │   ├── models.py
- │   └── static/
- │       ├── index.html
- │       ├── styles.css
- │       └── script.js
+# Recipes Collection App:
 
 Application structure and how each component works:
 
