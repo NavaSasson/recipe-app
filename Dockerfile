@@ -23,7 +23,9 @@ WORKDIR /app
 COPY --from=builder /usr/local/lib/python3.9/site-packages/ /usr/local/lib/python3.9/site-packages/
 
 # Copy application code
-COPY src/ .
+COPY src/app.py .
+COPY src/models.py .
+COPY src/config.py .
 
 # Set proper permissions
 RUN chown -R appuser:appuser /app

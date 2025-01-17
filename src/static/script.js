@@ -1,4 +1,3 @@
-
 // Fetch and display recipes
 async function fetchRecipes(category = '') {
     try {
