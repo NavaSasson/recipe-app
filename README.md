@@ -43,7 +43,10 @@ MongoDB Schema:
 
 
 How to Run the Application:
+# Option 1: with docker-compose:
+Run: docker-compose up --build -d
 
+# Option 2: 
 # 1. Create and activate virtual environment
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
@@ -76,3 +79,9 @@ python src/app.py
 
 Running the app by docker-compose:
 docker-compose up --build
+
+# Run Unit Tests:
+Run: docker-compose -f docker-compose.unit-tests.yaml up --build -d
+check that u get exit code 0 from the test container
+
+docker-compose -f docker-compose.unit-tests.yaml down

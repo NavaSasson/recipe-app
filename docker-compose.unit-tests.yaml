@@ -1,0 +1,30 @@
+services:
+  mongo:
+    image: mongo:6.0.6
+    container_name: test-mongo
+    networks:
+      - test-network
+    environment:
+      - MONGO_INITDB_DATABASE=test_recipes
+  
+  test-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.unit-tests
+    container_name: test-container
+    networks:
+      - test-network
+    environment:
+      - MONGO_HOST=test-mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=test_recipes
+      - TESTING=True
+      - DEBUG=True
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000"
+
+networks:
+  test-network:
+    driver: bridge
