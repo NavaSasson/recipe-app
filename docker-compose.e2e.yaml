@@ -1,0 +1,54 @@
+services:
+  nginx:
+    image: nginx:1.25.3-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./src/static:/usr/share/nginx/html/static:ro
+      - ./src/static/index.html:/usr/share/nginx/html/index.html:ro
+      - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - recipe_app
+    networks:
+      - frontend-net
+
+  recipe_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    networks:
+      - frontend-net
+      - backend-net
+
+  mongodb:
+    image: mongo:6.0.6
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    networks:
+      - backend-net
+
+  e2e_tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.e2e
+    depends_on:
+      - nginx
+    networks:
+      - frontend-net
+      - backend-net
+
+networks:
+  frontend-net:
+    driver: bridge
+  backend-net:
+    driver: bridge
+
+volumes:
+  mongodb_data:
