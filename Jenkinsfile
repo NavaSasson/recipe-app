@@ -12,11 +12,6 @@ pipeline {
         githubPush()
     }
 
-    tools {
-        EMAIL = 'nava7386@gmail.com'
-        terraform 'terraform-amd64'
-    }
-
     agent any
     
     environment {
