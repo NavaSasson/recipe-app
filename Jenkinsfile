@@ -176,7 +176,7 @@ def runTests(composeFile) {
 def getNextVersion() {
     def currentVersion = '1.0.0'
     try {
-        sh 'git fetch --tags'
+        sh 'git fetch --tags https://github.com/NavaSasson/recipe-app.git'
         // Get all git tags
         def tags = sh(script: 'git tag -l "v*"', returnStdout: true).trim()
         if (tags) {
