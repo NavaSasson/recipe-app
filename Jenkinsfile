@@ -20,7 +20,6 @@ pipeline {
         ECR_REGISTRY = '600627353694.dkr.ecr.ap-south-1.amazonaws.com/nava-recipe-app'
         IMAGE_TAG = "${env.GIT_COMMIT[0..7]}"
         GITOPS_REPO = 'git@github.com:NavaSasson/gitops-config.git'
-        DOCKER_COMPOSE = '/usr/local/bin/docker-compose'
     }
     
     stages {
@@ -144,8 +143,8 @@ pipeline {
     post {
         always {
             cleanWs()
-            sh "${DOCKER_COMPOSE} -f docker-compose.unit-tests.yaml down"
-            sh "${DOCKER_COMPOSE} -f docker-compose.e2e.yaml down"
+            sh 'docker compose -f docker-compose.unit-tests.yaml down'
+            sh 'docker compose -f docker-compose.e2e.yaml down'
         }
         failure {
             emailext (
@@ -160,7 +159,7 @@ pipeline {
 def runTests(composeFile) {
     try {
         sh """
-            ${DOCKER_COMPOSE}-f ${composeFile} up --build -d
+            docker compose -f ${composeFile} up --build -d
             sleep 30
             docker logs -f test-container || true
             EXIT_CODE=\$(docker inspect test-container --format='{{.State.ExitCode}}')
@@ -169,7 +168,7 @@ def runTests(composeFile) {
             fi
         """
     } finally {
-        sh "${DOCKER_COMPOSE} -f ${composeFile} down"
+        sh "docker compose -f ${composeFile} down"
     }
 }
 
