@@ -76,7 +76,9 @@ pipeline {
 
         stage('Tag Version') {
             when {
-                branch 'main'
+                anyOf {
+                    branch 'main'
+                }
             }
             steps {
                 script {
@@ -92,6 +94,11 @@ pipeline {
         }
 
         stage('Publish to ECR') {
+            when {
+                anyOf {
+                    branch 'main'
+                }
+            }
             steps {
                 echo 'Publishing docker image to ECR...'
                 script {
@@ -116,7 +123,9 @@ pipeline {
 
         stage('Deploy') {
             when {
-                branch 'main'
+                anyOf {
+                    branch 'main'
+                }
             }
             steps {
                 script {
