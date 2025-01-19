@@ -126,7 +126,8 @@ pipeline {
                             cd gitops-config
                             
                             # Update version in Chart.yaml
-                            yq e '.appVersion = "${env.NEW_VERSION}"' -i Chart.yaml
+                            # yq e '.appVersion = "${env.NEW_VERSION}"' -i Chart.yaml
+                            sed -i 's/^appVersion:.*/appVersion: ${env.NEW_VERSION}/' Chart.yaml
                             
                             git add Chart.yaml
                             git commit -m "Update recipe-app version to ${env.NEW_VERSION}"
