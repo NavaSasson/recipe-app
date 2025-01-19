@@ -141,8 +141,6 @@ pipeline {
     post {
         always {
             cleanWs()
-            sh 'docker compose -f docker-compose.unit-tests.yaml down'
-            sh 'docker compose -f docker-compose.e2e.yaml down'
         }
         failure {
             echo "Pipeline failed at stage: ${currentBuild.displayName}"
