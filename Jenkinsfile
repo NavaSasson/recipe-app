@@ -11,6 +11,7 @@ pipeline {
     agent any
     
     environment {
+        EMAIL='nava7386@gmail.com'
         DOCKER_IMAGE = 'recipe-app'
         AWS_REGION = 'ap-south-1'
         ECR_REGISTRY = '600627353694.dkr.ecr.ap-south-1.amazonaws.com/nava-recipe-app'
@@ -79,15 +80,20 @@ pipeline {
             }
             steps {
                 script {
-                    env.NEW_VERSION = getNextVersion()
-                    sh """
-                        git tag -a v${env.NEW_VERSION} -m "Version ${env.NEW_VERSION}"
-                        git push origin v${env.NEW_VERSION}
-                    """
+                    withCredentials([usernamePassword(credentialsId: 'Nava-github-AT', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USER')]) {
+                        env.NEW_VERSION = getNextVersion()
+                        sh """
+                            git config --global user.name "${env.GITHUB_USER}"
+                            git config --global user.email "${EMAIL}"
+                            git tag -a v${env.NEW_VERSION} -m "Version ${env.NEW_VERSION}"
+                            git push https://${env.GITHUB_USER}:${env.GITHUB_TOKEN}@github.com/your-repo.git v${env.NEW_VERSION}
+                        """
+                    }
                 }
             }
         }
-        
+
+
         stage('Publish to ECR') {
             when {
                 branch 'main'
