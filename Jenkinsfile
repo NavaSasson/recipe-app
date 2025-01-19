@@ -114,31 +114,28 @@ pipeline {
             }
         }
 
-        // stage('Deploy') {
-        //     when {
-        //         branch 'main'
-        //     }
-        //     steps {
-        //         script {
-        //             withCredentials([sshUserPrivateKey(credentialsId: 'gitops-ssh-key', keyFileVariable: 'SSH_KEY')]) {
-        //                 sh """
-        //                     git clone ${GITOPS_REPO} gitops-config
-        //                     cd gitops-config
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'Nava-github-AT', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USER')]) {
+                        sh """
+                            git clone ${GITOPS_REPO} gitops-config
+                            cd gitops-config
                             
-        //                     # Update version in Chart.yaml
-        //                     yq e '.version = "${env.NEW_VERSION}"' -i helm/recipe-app/Chart.yaml
-        //                     yq e '.appVersion = "${env.NEW_VERSION}"' -i helm/recipe-app/Chart.yaml
+                            # Update version in Chart.yaml
+                            yq e '.appVersion = "${env.NEW_VERSION}"' -i Chart.yaml
                             
-        //                     git config --global user.email "jenkins@example.com"
-        //                     git config --global user.name "Jenkins"
-        //                     git add helm/recipe-app/Chart.yaml
-        //                     git commit -m "Update recipe-app version to ${env.NEW_VERSION}"
-        //                     GIT_SSH_COMMAND="ssh -i ${SSH_KEY}" git push origin main
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+                            git add Chart.yaml
+                            git commit -m "Update recipe-app version to ${env.NEW_VERSION}"
+                            git push origin main
+                        """
+                    }
+                }
+            }
+        }
     }
     
     post {
