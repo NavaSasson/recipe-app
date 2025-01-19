@@ -98,7 +98,7 @@ pipeline {
                         sh """
                             aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REGISTRY}
                             
-                            docker tag ${DOCKER_IMAGE}:${IMAGE_TAG]} ${env.ECR_REGISTRY}:${env.NEW_VERSION}
+                            docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${env.ECR_REGISTRY}:${env.NEW_VERSION}
                             docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${env.ECR_REGISTRY}:latest
                             
                             docker push ${env.ECR_REGISTRY}:${env.NEW_VERSION}
