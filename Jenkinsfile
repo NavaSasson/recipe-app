@@ -33,17 +33,17 @@ pipeline {
         }
         
         stage('Unit Tests') {
-            // when {
-            //     anyOf {
-            //         branch 'main'
-            //         branch 'feature/*'
-            //     }
-            // }
-            // steps {
-            //     script {
-            //         runTests('docker-compose.unit-tests.yaml')
-            //     }
-            // }
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'feature/*'
+                }
+            }
+            steps {
+                script {
+                    // runTests('docker-compose.unit-tests.yaml')
+                }
+            }
         }
         
         stage('Build + Package') {
@@ -61,17 +61,17 @@ pipeline {
         }
         
         stage('E2E Tests') {
-            // when {
-            //     anyOf {
-            //         branch 'main'
-            //         branch 'feature/*'
-            //     }
-            // }
-            // steps {
-            //     script {
-            //         runTests('docker-compose.e2e.yaml')
-            //     }
-            // }
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'feature/*'
+                }
+            }
+            steps {
+                script {
+                    // runTests('docker-compose.e2e.yaml')
+                }
+            }
         }
 
         stage('Tag Version') {
