@@ -32,19 +32,19 @@ pipeline {
             }
         }
         
-        // stage('Unit Tests') {
-        //     when {
-        //         anyOf {
-        //             branch 'main'
-        //             branch 'feature/*'
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             runTests('docker-compose.unit-tests.yaml')
-        //         }
-        //     }
-        // }
+        stage('Unit Tests') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'feature/*'
+                }
+            }
+            steps {
+                script {
+                    runTests('docker-compose.unit-tests.yaml')
+                }
+            }
+        }
         
         stage('Build + Package') {
             when {
@@ -60,19 +60,19 @@ pipeline {
             }
         }
         
-        // stage('E2E Tests') {
-        //     when {
-        //         anyOf {
-        //             branch 'main'
-        //             branch 'feature/*'
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             runTests('docker-compose.e2e.yaml')
-        //         }
-        //     }
-        // }
+        stage('E2E Tests') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'feature/*'
+                }
+            }
+            steps {
+                script {
+                    runTests('docker-compose.e2e.yaml')
+                }
+            }
+        }
 
         stage('Tag Version') {
             when {
@@ -145,11 +145,11 @@ pipeline {
         }
         failure {
             echo "Pipeline failed at stage: ${currentBuild.displayName}"
-            // emailext (
-            //     subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-            //     body: "Pipeline failed at stage: ${currentBuild.displayName}",
-            //     recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-            // )
+            emailext (
+                subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
+                body: "Pipeline failed at stage: ${currentBuild.displayName}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
         }
     }
 }
