@@ -98,21 +98,21 @@ pipeline {
                     sh """
                         # Login to AWS ECR
                         echo "Logging into AWS ECR..."
-                        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
                         
                         # Tag the image for ECR
-                        echo "Tagging the Docker image ${DOCKER_IMAGE}:${IMAGE_TAG} for ECR..."
-                        docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${ECR_REGISTRY}:${env.NEW_VERSION}
-                        docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${ECR_REGISTRY}:latest
+                        echo "Tagging the Docker image $DOCKER_IMAGE:$IMAGE_TAG for ECR..."
+                        docker tag $DOCKER_IMAGE:$IMAGE_TAG $ECR_REGISTRY:${env.NEW_VERSION}
+                        docker tag $DOCKER_IMAGE:$IMAGE_TAG $ECR_REGISTRY:latest
 
                         # Push the Docker image to ECR
-                        docker push ${ECR_REGISTRY}:${env.NEW_VERSION}
-                        docker push ${ECR_REGISTRY}:latest
+                        docker push $ECR_REGISTRY:${env.NEW_VERSION}
+                        docker push $ECR_REGISTRY:latest
                     """
                 }
             }
         }
-        
+
         // stage('Deploy') {
         //     when {
         //         branch 'main'
