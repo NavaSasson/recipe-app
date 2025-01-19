@@ -83,10 +83,10 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'Nava-github-AT', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USER')]) {
                         env.NEW_VERSION = getNextVersion()
                         sh """
-                            git config --global user.name "${env.GITHUB_USER}"
+                            git config --global user.name "${GITHUB_USER}"
                             git config --global user.email "${EMAIL}"
                             git tag -a v${env.NEW_VERSION} -m "Version ${env.NEW_VERSION}"
-                            git push https://${env.GITHUB_USER}:${env.GITHUB_TOKEN}@github.com/your-repo.git v${env.NEW_VERSION}
+                            git push https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/your-repo.git v${env.NEW_VERSION}
                         """
                     }
                 }
