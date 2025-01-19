@@ -99,7 +99,9 @@ pipeline {
                         # Login to AWS ECR
                         echo "Logging into AWS ECR..."
                         # aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-                        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 600627353694.dkr.ecr.ap-south-1.amazonaws.com
+                        docker login -u AWS -p $(aws ecr get-login-password --region ap-south-1) 600627353694.dkr.ecr.ap-south-1.amazonaws.com
+
+
                         
                         # Tag the image for ECR
                         echo "Tagging the Docker image $DOCKER_IMAGE:$IMAGE_TAG for ECR..."
