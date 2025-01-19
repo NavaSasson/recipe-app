@@ -143,6 +143,7 @@ pipeline {
             sh 'docker compose -f docker-compose.e2e.yaml down'
         }
         failure {
+            echo "Pipeline failed at stage: ${currentBuild.displayName}"
             // emailext (
             //     subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
             //     body: "Pipeline failed at stage: ${currentBuild.displayName}",
