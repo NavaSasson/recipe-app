@@ -44,7 +44,7 @@ MongoDB Schema:
 
 How to Run the Application:
 # Option 1: with docker-compose:
-Run: docker-compose up --build -d
+Run: Run: docker-compose -f docker-compose.app.yaml up --build -d
 
 # Option 2: 
 # 1. Create and activate virtual environment
@@ -85,3 +85,9 @@ Run: docker-compose -f docker-compose.unit-tests.yaml up --build -d
 check that u get exit code 0 from the test container
 
 docker-compose -f docker-compose.unit-tests.yaml down
+
+# Run E2E Tests:
+Run: docker-compose -f docker-compose.e2e.yaml up --build -d
+check that u get exit code 0 from the test container
+
+docker-compose -f docker-compose.e2e.yaml down
