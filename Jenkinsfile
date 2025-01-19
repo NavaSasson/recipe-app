@@ -40,9 +40,9 @@ pipeline {
                 }
             }
             steps {
-                script {
+                // script {
                     // runTests('docker-compose.unit-tests.yaml')
-                }
+                // }
             }
         }
         
@@ -68,9 +68,9 @@ pipeline {
                 }
             }
             steps {
-                script {
+                // script {
                     // runTests('docker-compose.e2e.yaml')
-                }
+                // }
             }
         }
 
