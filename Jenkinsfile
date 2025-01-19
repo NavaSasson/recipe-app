@@ -83,7 +83,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'Nava-github-AT', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USER')]) {
                         env.NEW_VERSION = getNextVersion()
                         sh """
-                            git tag v${env.NEW_VERSION}"
+                            git tag v${env.NEW_VERSION}
                             git push https://${env.GITHUB_USER}:${env.GITHUB_TOKEN}@github.com/recipe-app.git v${env.NEW_VERSION}
                         """
                     }
