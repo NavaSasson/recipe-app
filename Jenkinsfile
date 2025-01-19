@@ -91,24 +91,24 @@ pipeline {
             }
         }
 
-
         stage('Publish to ECR') {
-            when {
-                branch 'main'
-            }
             steps {
+                echo 'Publishing docker image to ECR...'
                 script {
-                    withAWS(credentials: 'aws-credentials', region: env.AWS_REGION) {
-                        sh """
-                            aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REGISTRY}
-                            
-                            docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${env.ECR_REGISTRY}:${env.NEW_VERSION}
-                            docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${env.ECR_REGISTRY}:latest
-                            
-                            docker push ${env.ECR_REGISTRY}:${env.NEW_VERSION}
-                            docker push ${env.ECR_REGISTRY}:latest
-                        """
-                    }
+                    sh """
+                        # Login to AWS ECR
+                        echo "Logging into AWS ECR..."
+                        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                        
+                        # Tag the image for ECR
+                        echo "Tagging the Docker image $IMAGE_NAME:$IMAGE_TAG for ECR..."
+                        docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${ECR_REGISTRY}:${env.NEW_VERSION}
+                        docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${ECR_REGISTRY}:latest
+
+                        # Push the Docker image to ECR
+                        docker push ${ECR_REGISTRY}:${env.NEW_VERSION}
+                        docker push ${ECR_REGISTRY}:latest
+                    """
                 }
             }
         }
