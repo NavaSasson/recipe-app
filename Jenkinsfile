@@ -9,7 +9,7 @@ pipeline {
     }
 
     triggers {
-        github(triggerOnPush: true, branchFilterType: 'NameBasedFilter', includeBranchesSpec: 'main, feature/*')
+        githubPush()
     }
 
     tools {
@@ -29,12 +29,24 @@ pipeline {
     
     stages {
         stage('Clone/Pull') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'feature/*'
+                }
+            }
             steps {
                 checkout scm
             }
         }
         
         stage('Unit Tests') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'feature/*'
+                }
+            }
             steps {
                 script {
                     runTests('docker-compose.unit-tests.yaml')
@@ -43,6 +55,12 @@ pipeline {
         }
         
         stage('Build + Package') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'feature/*'
+                }
+            }
             steps {
                 script {
                     docker.build("${DOCKER_IMAGE}:${IMAGE_TAG}")
@@ -51,6 +69,12 @@ pipeline {
         }
         
         stage('E2E Tests') {
+            when {
+                anyOf {
+                    branch 'main'
+                    branch 'feature/*'
+                }
+            }
             steps {
                 script {
                     runTests('docker-compose.e2e.yaml')
