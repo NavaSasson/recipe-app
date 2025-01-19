@@ -84,7 +84,7 @@ pipeline {
                         env.NEW_VERSION = getNextVersion()
                         sh """
                             git tag v${env.NEW_VERSION}"
-                            git push https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/your-repo.git v${env.NEW_VERSION}
+                            git push https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/recipe-app.git v${env.NEW_VERSION}
                         """
                     }
                 }
