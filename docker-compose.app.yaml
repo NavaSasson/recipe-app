@@ -16,6 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: recipe-app:latest
     env_file: 
       - .env
     depends_on:

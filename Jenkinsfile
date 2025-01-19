@@ -1,7 +1,3 @@
-def isPushable() {
-    return env.BRANCH_NAME == 'main'
-}
-
 pipeline {
     options {
         timeout(time: 15, unit: "MINUTES")
@@ -18,7 +14,7 @@ pipeline {
         DOCKER_IMAGE = 'recipe-app'
         AWS_REGION = 'ap-south-1'
         ECR_REGISTRY = '600627353694.dkr.ecr.ap-south-1.amazonaws.com/nava-recipe-app'
-        IMAGE_TAG = "${env.GIT_COMMIT[0..7]}"
+        IMAGE_TAG = "latest"
         GITOPS_REPO = 'git@github.com:NavaSasson/gitops-config.git'
     }
     
@@ -102,8 +98,8 @@ pipeline {
                         sh """
                             aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REGISTRY}
                             
-                            docker tag ${DOCKER_IMAGE}:${env.GIT_COMMIT[0..7]} ${env.ECR_REGISTRY}:${env.NEW_VERSION}
-                            docker tag ${DOCKER_IMAGE}:${env.GIT_COMMIT[0..7]} ${env.ECR_REGISTRY}:latest
+                            docker tag ${DOCKER_IMAGE}:${IMAGE_TAG]} ${env.ECR_REGISTRY}:${env.NEW_VERSION}
+                            docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${env.ECR_REGISTRY}:latest
                             
                             docker push ${env.ECR_REGISTRY}:${env.NEW_VERSION}
                             docker push ${env.ECR_REGISTRY}:latest
@@ -147,11 +143,11 @@ pipeline {
             sh 'docker compose -f docker-compose.e2e.yaml down'
         }
         failure {
-            emailext (
-                subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
-                body: "Pipeline failed at stage: ${currentBuild.displayName}",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-            )
+            // emailext (
+            //     subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
+            //     body: "Pipeline failed at stage: ${currentBuild.displayName}",
+            //     recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            // )
         }
     }
 }
