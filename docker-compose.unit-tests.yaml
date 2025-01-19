@@ -11,7 +11,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.unit-tests
-    container_name: test-container
+    container_name: test-container-main
     networks:
       - test-network
     environment:

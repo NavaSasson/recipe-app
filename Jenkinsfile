@@ -168,8 +168,8 @@ def runTests(composeFile) {
         sh """
             docker compose -f ${composeFile} up --build -d
             sleep 30
-            docker logs -f test-container || true
-            EXIT_CODE=\$(docker inspect test-container --format='{{.State.ExitCode}}')
+            docker logs -f test-container-main || true
+            EXIT_CODE=\$(docker inspect test-container-main --format='{{.State.ExitCode}}')
             if [ \$EXIT_CODE -ne 0 ]; then
                 exit 1
             fi
