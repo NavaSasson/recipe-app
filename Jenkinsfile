@@ -16,7 +16,7 @@ pipeline {
         AWS_REGION = 'ap-south-1'
         ECR_REGISTRY = '600627353694.dkr.ecr.ap-south-1.amazonaws.com/nava-recipe-app'
         IMAGE_TAG = "latest"
-        GITOPS_REPO = 'git@github.com:NavaSasson/gitops-config.git'
+        GITOPS_REPO = 'github.com/NavaSasson/gitops-config.git'
     }
     
     stages {
@@ -122,7 +122,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'Nava-github-AT', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USER')]) {
                         sh """
-                            git clone ${GITOPS_REPO} gitops-config
+                            git clone https://${env.GITHUB_USER}:${env.GITHUB_TOKEN}@${GITOPS_REPO} gitops-config
                             cd gitops-config
                             
                             # Update version in Chart.yaml
