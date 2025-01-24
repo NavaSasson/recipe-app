@@ -105,3 +105,8 @@ def test_invalid_recipe_id():
     response = requests.get(f"{BASE_URL}/recipe/{non_existent_id}")
     assert response.status_code == 404
     assert response.json()["message"] == "Recipe not found"
+
+def test_metrics_endpoint(client):
+    """Test the metrics endpoint"""
+    response = client.get('/metrics')
+    assert response.status_code == 200
