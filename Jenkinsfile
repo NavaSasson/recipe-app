@@ -111,11 +111,9 @@ pipeline {
                         # Tag the image for ECR
                         echo "Tagging the Docker image $DOCKER_IMAGE:$IMAGE_TAG for ECR..."
                         docker tag $DOCKER_IMAGE:$IMAGE_TAG $ECR_REGISTRY:${env.NEW_VERSION}
-                        docker tag $DOCKER_IMAGE:$IMAGE_TAG $ECR_REGISTRY:latest
 
                         # Push the Docker image to ECR
                         docker push $ECR_REGISTRY:${env.NEW_VERSION}
-                        docker push $ECR_REGISTRY:latest
                     """
                 }
             }
@@ -135,10 +133,9 @@ pipeline {
                             cd gitops-config
                             
                             # Update version in Chart.yaml
-                            # yq e '.appVersion = "${env.NEW_VERSION}"' -i Chart.yaml
-                            sed -i 's/^appVersion:.*/appVersion: ${env.NEW_VERSION}/' Chart.yaml
+                            sed -i 's/^appVersion:.*/appVersion: ${env.NEW_VERSION}/' charts/recipe-app/Chart.yaml
                             
-                            git add Chart.yaml
+                            git add charts/recipe-app/Chart.yaml
                             git commit -m "Update recipe-app version to ${env.NEW_VERSION}"
                             git push origin main
                         """
