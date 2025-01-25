@@ -157,6 +157,14 @@ pipeline {
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
+        success {
+            echo "Pipeline succeeded at stage: ${currentBuild.displayName}"
+            emailext (
+                subject: "Pipeline Succeeded: ${currentBuild.fullDisplayName}",
+                body: "Pipeline succeeded! Build number: ${env.BUILD_NUMBER}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
+        }
     }
 }
 
