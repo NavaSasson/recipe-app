@@ -17,6 +17,7 @@ pipeline {
         ECR_REGISTRY = '600627353694.dkr.ecr.ap-south-1.amazonaws.com/nava-recipe-app'
         IMAGE_TAG = "latest"
         GITOPS_REPO = 'github.com/NavaSasson/gitops-config.git'
+        APP_REPO = 'github.com/NavaSasson/recipe-app.git'
     }
     
     stages {
@@ -86,7 +87,7 @@ pipeline {
                         env.NEW_VERSION = getNextVersion()
                         sh """
                             git tag v${env.NEW_VERSION}
-                            git push https://${env.GITHUB_USER}:${env.GITHUB_TOKEN}@github.com/NavaSasson/recipe-app.git v${env.NEW_VERSION}
+                            git push https://${env.GITHUB_USER}:${env.GITHUB_TOKEN}@${APP_REPO} v${env.NEW_VERSION}
                         """
                     }
                 }
@@ -188,7 +189,7 @@ def getNextVersion() {
     def currentVersion = '1.0.0'
     try {
         withCredentials([usernamePassword(credentialsId: 'Nava-github-AT', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USER')]) {
-            sh "git fetch --tags https://${env.GITHUB_USER}:${env.GITHUB_TOKEN}@github.com/NavaSasson/recipe-app.git"
+            sh "git fetch --tags https://${env.GITHUB_USER}:${env.GITHUB_TOKEN}@${APP_REPO}.git"
         }
         // Get all git tags
         def tags = sh(script: 'git tag -l "v*"', returnStdout: true).trim()
