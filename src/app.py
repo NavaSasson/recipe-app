@@ -136,6 +136,5 @@ def metrics():
     logger.info("Accessing metrics endpoint")
     return generate_latest()
 
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
