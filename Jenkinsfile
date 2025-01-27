@@ -134,9 +134,11 @@ pipeline {
                             cd gitops-config
                             
                             # Update version in Chart.yaml
-                            sed -i 's/^appVersion:.*/appVersion: ${env.NEW_VERSION}/' charts/recipe-app/Chart.yaml
+                            #sed -i 's/^appVersion:.*/appVersion: ${env.NEW_VERSION}/' charts/recipe-app/values.yaml
+                            sed -i 's/^\s*appVersion:.*/appVersion: ${env.NEW_VERSION}/' charts/recipe-app/values.yaml
                             
-                            git add charts/recipe-app/Chart.yaml
+                            # Commit and push
+                            git add charts/recipe-app/values.yaml
                             git commit -m "Update recipe-app version to ${env.NEW_VERSION}"
                             git push origin main
                         """
